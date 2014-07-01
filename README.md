@@ -20,8 +20,10 @@ Nginx + TornadoでWebサーバーを構築してみる
    * インストール済
 
 ## セットアップ
-sudo pip install tornado
-git clone https://github.com/pistatium/tornado_nginx.git
-sudo bash /etc/setup.sh
 
-##  
+    sudo pip install tornado
+    git clone https://github.com/pistatium/tornado_nginx.git
+    sudo bash /etc/setup.sh
+    sudo /etc/init.d/nginx restart
+    
+
