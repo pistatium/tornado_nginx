@@ -1,0 +1,42 @@
+#!/bin/bash
+
+APP_NAME=tornado-test
+DAEMON_DIR=/svr/${APP_NAME}/app
+DAEMON=$DAEMON_DIR/main.py
+NAME=tornado
+DESC="tornado daemon"
+if [ ! -f $DAEMON ]; then 
+    echo "DAEMON is not exist"
+    exit 0
+fi
+
+set -e
+
+case "$1" in
+  start)
+        echo -n "Starting $DESC: "
+        start-stop-daemon --start --pidfile /var/run/$NAME.pid \
+            --chdir $DAEMON_DIR \
+            --make-pidfile --background -c nobody --startas $DAEMON
+        echo "$NAME.  [ OK ]"
+        ;;
+  stop)
+        echo -n "Stopping $DESC: "
+        start-stop-daemon --stop --quiet --oknodo \
+            --pidfile /var/run/$NAME.pid
+        rm -f /var/run/$NAME.pid
+        echo "$NAME. [ OK ]"
+        ;;
+  restart)
+        echo -n "Restarting $DESC: "
+        start-stop-daemon --stop --quiet --oknodo \
+            --pidfile /var/run/$NAME.pid
+        rm -f /var/run/$NAME.pid
+        start-stop-daemon --start --pidfile /var/run/$NAME.pid \
+            --chdir $DAEMON_DIR \
+            --make-pidfile --background -c nobody --startas $DAEMON
+        echo "$NAME. [ OK ]"
+esac
+
+exit 0
+
